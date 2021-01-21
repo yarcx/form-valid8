@@ -1,24 +1,21 @@
-import logo from './logo.svg';
+import React, {useState} from 'react'
 import './App.css';
+import SignUp from "./components/SignUp/SignUp";
+import SignIn from "./components/SignIn/SingIn"
+import Navbar from './components/Navbar';
 
 function App() {
+  
+    const [Box, setBox] = useState("Register");
+    console.log(Box);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar setBox={setBox} />
+      <div className="flex items-center justify-center h-screen ">
+        {Box === "Register" && <SignUp />}
+        {Box === "SignIn" && <SignIn />}
+      </div>
+    </>
   );
 }
 
