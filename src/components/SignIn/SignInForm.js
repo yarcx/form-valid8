@@ -3,35 +3,70 @@ import Button from '../Button'
 import {FaDoorOpen} from 'react-icons/fa'
 import { useForm } from "react-hook-form";
 
-function SignInForm() {
-    const { register, handleSubmit } = useForm();
-    const onSubmit = (data) => console.log(data);
+function SignInForm( {setBox} ) {
+  const { register, handleSubmit, errors } = useForm();
+  const userValue = JSON.parse(localStorage.getItem("user"))
+  const onSubmit = (value, e) => {
+    userValue.map(user => {
+      if (!value.username && !value.password) {
+        errors.username = true
+      }
+      if (user.username === value.username) {
+        setBox('Success')
+        e.target.reset()
+      } else {
+        errors.username = true
+      }
+    })
+  }
+
+    
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="p-5 form">
         <div className="mb-4">
           <input
             type="text"
-            name="Username"
-            ref={register({ required: true, maxLength: 20 })}
+            name="username"
+            ref={register({ required: true, maxLength: 10 })}
             placeholder="UserName"
-            className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200"
+            className={`w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors 
+            duration-200 ease-in-out bg-white  rounded outline-none  
+            ${
+              errors.username
+                ? "focus:border-red-600 focus:ring-2 focus:ring-red-600 border border-red-600"
+                : "focus:border-green-500 focus:ring-2 focus:ring-green-200 border border-gray-300"
+            } 
+            `}
           />
+          {errors.username && (
+            <p className="text-red-600">The username field is required</p>
+          )}
         </div>
 
         <div className="mb-4">
           <input
             type="password"
             name="password"
-            ref={register}
+            ref={register({ required: "required", maxLength: 4 })}
             placeholder="Password"
-            className="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200"
+            className={`w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors 
+            duration-200 ease-in-out bg-white  rounded outline-none  
+            ${
+              errors.username
+                ? "focus:border-red-600 focus:ring-2 focus:ring-red-600 border border-red-600"
+                : "focus:border-green-500 focus:ring-2 focus:ring-green-200 border border-gray-300"
+            } 
+            `}
           />
+          {errors.password && (
+            <p className="text-red-600">The password field is required</p>
+          )}
         </div>
+
         <div className="flex items-center justify-start mb-4">
           <input
             type="checkbox"
-            name="password"
-            ref={register}
+            name="checkbox"
             placeholder="Password"
             className="mr-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200"
           />
